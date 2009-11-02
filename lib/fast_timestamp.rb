@@ -5,6 +5,7 @@ module FastTimestamp
   end
   
   def timestamp!(key)
+    raise "Can't timestamp new records" if new_record?
     transaction do
       t = ::Timestamp.find_or_create_by_timestampable_type_and_timestampable_id_and_key(self.class.base_class.name, id, key.to_s)
       t.update_attribute :stamped_at, Time.zone.now
@@ -12,6 +13,7 @@ module FastTimestamp
   end
 
   def timestamped?(key)
+    raise "Can't check timestamps on new record" if new_record?
     ::Timestamp.find_by_timestampable_type_and_timestampable_id_and_key(self.class.base_class.name, id, key.to_s).present?
   end
 
