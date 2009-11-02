@@ -1,17 +1,28 @@
 = fast_timestamp
 
-Description goes here.
+== Suggested Timestamp model
 
-== Note on Patches/Pull Requests
- 
-* Fork the project.
-* Make your feature addition or bug fix.
-* Add tests for it. This is important so I don't break it in a
-  future version unintentionally.
-* Commit, do not mess with rakefile, version, or history.
-  (if you want to have your own version, that is fine but
-   bump version in a commit by itself I can ignore when I pull)
-* Send me a pull request. Bonus points for topic branches.
+  class Timestamp < ActiveRecord::Base
+    index [:timestampable_id, :timestampable_type, :key]            # for cache-money only
+    index :id                                                       # for cache-money only
+    belongs_to :timestampable, :polymorphic => true
+    validates_presence_of :key, :timestampable_id, :timestampable_type
+    validates_uniqueness_of :key, :scope => [ :timestampable_id, :timestampable_type ]
+  end
+
+== Suggested Timestamp migration
+
+  create_table "timestamps", :force => true do |t|
+    t.integer  "timestampable_id"
+    t.string   "timestampable_type"
+    t.string   "key"
+    t.datetime "stamped_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "timestamps", ["timestampable_id", "timestampable_type", "key"], :name => "index_timestamps_on_t_id_and_t_type_and_key"
+  add_index "timestamps", ["timestampable_id", "timestampable_type"], :name => "index_timestamps_on_timestampable_id_and_timestampable_type"
 
 == Copyright
 
