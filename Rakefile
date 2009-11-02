@@ -10,14 +10,15 @@ begin
     gem.email = "seamus@abshere.net"
     gem.homepage = "http://github.com/seamusabshere/fast_timestamp"
     gem.authors = ["Seamus Abshere"]
-    gem.rubyforge_project = "fast_timestamp"
+    # not important enough yet
+    # gem.rubyforge_project = "fasttimestamp"
     gem.add_development_dependency "rspec", ">= 1.2.9"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
-  Jeweler::RubyforgeTasks.new do |rubyforge|
-    rubyforge.doc_task = "rdoc"
-  end
+  # Jeweler::RubyforgeTasks.new do |rubyforge|
+  #   rubyforge.doc_task = "rdoc"
+  # end
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
