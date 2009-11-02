@@ -14,7 +14,7 @@ module FastTimestamp
 
   def timestamped?(key)
     raise "Can't check timestamps on new record" if new_record?
-    ::Timestamp.find_by_timestampable_type_and_timestampable_id_and_key(self.class.base_class.name, id, key.to_s).present?
+    ::Timestamp.exists? :timestampable_type => self.class.base_class.name, :timestampable_id => id, :key => key.to_s
   end
 
   def fast_destroy_timestamps
