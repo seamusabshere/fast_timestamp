@@ -25,7 +25,9 @@ module FastTimestamp
 
   # returns a Time object
   def timestamp_for(key)
-    ::Timestamp.find_by_timestampable_type_and_timestampable_id_and_key(self.class.base_class.name, id, key.to_s).read_attribute :stamped_at
+    if t = ::Timestamp.find_by_timestampable_type_and_timestampable_id_and_key(self.class.base_class.name, id, key.to_s)
+      t.read_attribute :stamped_at
+    end
   end
 
   def fast_destroy_timestamps
