@@ -17,6 +17,11 @@ module FastTimestamp
     ::Timestamp.exists? :timestampable_type => self.class.base_class.name, :timestampable_id => id, :key => key.to_s
   end
 
+  # returns a Time object
+  def timestamp_for(key)
+    ::Timestamp.find_by_timestampable_type_and_timestampable_id_and_key(self.class.base_class.name, id, key.to_s).read_attribute :stamped_at
+  end
+
   def fast_destroy_timestamps
     ::Timestamp.destroy_all :timestampable_type => self.class.base_class.name, :timestampable_id => id
     true
