@@ -11,6 +11,12 @@ module FastTimestamp
       t.update_attribute :stamped_at, Time.zone.now
     end
   end
+  
+  def untimestamp!(key)
+    if t = ::Timestamp.find_by_timestampable_type_and_timestampable_id_and_key(self.class.base_class.name, id, key.to_s)
+      t.destroy
+    end
+  end
 
   def timestamped?(key)
     raise "Can't check timestamps on new record" if new_record?
